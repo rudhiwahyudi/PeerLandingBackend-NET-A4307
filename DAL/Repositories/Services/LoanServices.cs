@@ -34,6 +34,23 @@ namespace DAL.Repositories.Services
             return newLoan.BorrowerId;
         }
 
+        public async Task<string> Delete(string id)
+        {
+            var user = _peerlandingContext.MstLoans.SingleOrDefault(e => e.Id == id);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+
+            _peerlandingContext.MstLoans.Remove(user);
+            _peerlandingContext.SaveChanges();
+
+
+            return id;
+        }
+
         public async Task<List<ResListLoanDto>> LoanList()
         {
             var loans = await _peerlandingContext.MstLoans
