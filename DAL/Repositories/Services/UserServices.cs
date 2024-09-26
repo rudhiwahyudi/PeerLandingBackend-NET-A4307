@@ -116,8 +116,6 @@ namespace DAL.Repositories.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-
-
         public async Task<ResUpdateDto> UpdateUserbyAdmin(ReqUpdateAdminDto reqUpdate, string id)
         {
             var user = _context.MstUsers.SingleOrDefault(x => x.Id == id);
@@ -156,6 +154,26 @@ namespace DAL.Repositories.Services
 
 
             return id;
+        }
+
+        public async Task<ResGetUserDto> GetUserId(string id)
+        {
+            var user =  await _context.MstUsers.SingleOrDefaultAsync(x => x.Id == id);
+            if (user == null)
+            {
+                throw new Exception("User not found!");
+            }
+
+            var resuser = new ResGetUserDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Role = user.Role,
+                Balance = user.Balance,
+
+            };
+
+            return resuser;
         }
     }
 }

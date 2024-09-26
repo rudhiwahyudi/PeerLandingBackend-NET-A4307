@@ -80,15 +80,13 @@ namespace BEPeer.Controllers
 
 
         [HttpGet]
-        //[Authorize(Roles = "admin")]
-
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetUserId([FromQuery] string id)
         {
             try
             {
-                var users = await _userServices.GetAllUsers();
+                var users = await _userServices.GetUserId(id);
 
-                return Ok(new ResBaseDto<List<ResUserDto>>
+                return Ok(new ResBaseDto<ResGetUserDto>
                 {
                     Success = true,
                     Message = "List of Users",
@@ -97,7 +95,7 @@ namespace BEPeer.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ResBaseDto<List<ResUserDto>>
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResBaseDto<ResGetUserDto>
                 {
                     Success = false,
                     Message = ex.Message,
