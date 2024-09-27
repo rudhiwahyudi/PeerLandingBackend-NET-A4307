@@ -80,30 +80,65 @@ namespace BEPeer.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetUserId([FromQuery] string id)
+        public async Task<IActionResult> GetAllUsers()
         {
             try
             {
-                var users = await _userServices.GetUserId(id);
-
-                return Ok(new ResBaseDto<ResGetUserDto>
+                var users = await _userServices.GetAllUsers();
+                return Ok(new ResBaseDto<List<ResUserDto>>
                 {
                     Success = true,
-                    Message = "List of Users",
+                    Message = "Success gathered All user data!",
                     Data = users
                 });
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new ResBaseDto<ResGetUserDto>
+                if (ex.Message == "Email or Password is Wrong!")
+                {
+                    return BadRequest(new ResBaseDto<object>
+                    {
+                        Success = false,
+                        Message = ex.Message,
+                        Data = null,
+                    });
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError, new ResBaseDto<string>
                 {
                     Success = false,
                     Message = ex.Message,
-                    Data = null
+                    Data = null,
                 });
-
             }
         }
+
+
+        //[HttpGet]
+        //public async Task<IActionResult> GetUserId([FromQuery] string id)
+        //{
+        //    try
+        //    {
+        //        var users = await _userServices.GetUserId(id);
+
+        //        return Ok(new ResBaseDto<ResGetUserDto>
+        //        {
+        //            Success = true,
+        //            Message = "List of Users",
+        //            Data = users
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new ResBaseDto<ResGetUserDto>
+        //        {
+        //            Success = false,
+        //            Message = ex.Message,
+        //            Data = null
+        //        });
+
+        //    }
+        //}
+
 
         [HttpPost] 
         public async Task<IActionResult> Login(ReqLoginDto loginDto)

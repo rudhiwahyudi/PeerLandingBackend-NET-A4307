@@ -54,7 +54,7 @@ namespace DAL.Repositories.Services
         public async Task<List<ResUserDto>> GetAllUsers()
         {
             return await _context.MstUsers
-                .Where(user => user.Role != "admin")
+                //.Where(user => user.Role != "admin")
                 .Select(user => new ResUserDto
                 {
                     Id = user.Id,
